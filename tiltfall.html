@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tiltfall – Hilfe / Help</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --stone-dark:  #1c1510;
+      --stone-mid:   #2e241b;
+      --stone-warm:  #3d2f22;
+      --stone-light: #5a4535;
+      --wood:        #7a5533;
+      --wood-light:  #a0723f;
+      --torch:       #e8843a;
+      --torch-glow:  #f5c06a;
+      --cream:       #f0e6cc;
+      --cream-dim:   #c8b899;
+      --g-green:     #56b870;
+      --g-yellow:    #e8c43a;
+      --g-red:       #e05050;
+      --coin-gold:   #f0c040;
+      --panic-red:   #ff3030;
+      --r: 0.6rem;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Crimson Pro', Georgia, serif;
+      background-color: var(--stone-dark);
+      color: var(--cream);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -2;
+      background:
+        repeating-linear-gradient(92deg, transparent 0px, transparent 180px, rgba(0,0,0,.08) 180px, rgba(0,0,0,.08) 182px),
+        repeating-linear-gradient(178deg, transparent 0px, transparent 60px, rgba(255,255,255,.015) 60px, rgba(255,255,255,.015) 61px),
+        radial-gradient(ellipse at 20% 50%, #2a1e14 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, #231a11 0%, transparent 50%),
+        linear-gradient(160deg, #1c1510 0%, #2e241b 40%, #1a1209 100%);
+      pointer-events: none;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: relative;
+      background: linear-gradient(180deg, #0e0a06 0%, var(--stone-warm) 100%);
+      border-bottom: 3px solid var(--wood); overflow: hidden;
+    }
+    .header-glow {
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 200px;
+      background: radial-gradient(ellipse, rgba(232,132,58,.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .header-inner {
+      max-width: 900px; margin: 0 auto; padding: 2.5rem 2rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .logo-area { display: flex; flex-direction: column; gap: 0.2rem; }
+    .logo-area h1 {
+      font-family: 'Cinzel', serif; font-size: clamp(2rem, 6vw, 3.2rem);
+      font-weight: 900; letter-spacing: .06em; line-height: 1;
+      background: linear-gradient(135deg, var(--torch-glow) 0%, var(--torch) 60%, #c05a10 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .logo-area .subtitle {
+      font-family: 'Cinzel', serif; font-size: .75rem;
+      letter-spacing: .22em; color: var(--cream-dim); text-transform: uppercase;
+    }
+    .lang-switcher { display: flex; gap: .5rem; align-items: center; }
+    .lang-btn {
+      font-family: 'Cinzel', serif; font-size: .8rem; letter-spacing: .1em;
+      padding: .4rem .9rem; border-radius: 4px;
+      border: 2px solid var(--wood); background: transparent;
+      color: var(--cream-dim); cursor: pointer; transition: all .2s;
+    }
+    .lang-btn.active, .lang-btn:hover { background: var(--wood); color: var(--cream); border-color: var(--wood-light); }
+    .torches { display: flex; justify-content: center; padding-bottom: .5rem; }
+    .torch { font-size: 1.4rem; animation: flicker 2s ease-in-out infinite alternate; }
+    .torch:nth-child(2) { animation-delay: .4s; }
+    .torch:nth-child(3) { animation-delay: .8s; }
+    @keyframes flicker {
+      0%   { filter: brightness(1) drop-shadow(0 0 6px #e8843a); }
+      100% { filter: brightness(1.3) drop-shadow(0 0 14px #f5c06a); }
+    }
+
+    /* ── LAYOUT ── */
+    .page-layout {
+      max-width: 900px; margin: 0 auto;
+      display: grid; grid-template-columns: 220px 1fr;
+      gap: 2rem; padding: 2rem 1.5rem 4rem; align-items: start;
+    }
+    @media (max-width: 680px) { .page-layout { grid-template-columns: 1fr; } .sidebar { display: none; } }
+    .sidebar {
+      position: sticky; top: 1.5rem;
+      background: rgba(61,47,34,.6); border: 1px solid rgba(122,85,51,.4);
+      border-radius: var(--r); padding: 1.2rem 1rem; backdrop-filter: blur(4px);
+    }
+    .sidebar > h3 {
+      font-family: 'Cinzel', serif; font-size: .75rem; letter-spacing: .18em;
+      color: var(--torch); text-transform: uppercase; margin-bottom: .8rem;
+    }
+    .sidebar nav a {
+      display: block; padding: .4rem .6rem; color: var(--cream-dim);
+      text-decoration: none; border-radius: 4px; font-size: .95rem;
+      transition: all .15s; border-left: 2px solid transparent;
+    }
+    .sidebar nav a:hover { color: var(--cream); background: rgba(255,255,255,.05); border-left-color: var(--torch); padding-left: .9rem; }
+    .sidebar nav .nav-section {
+      display: block; font-size: .75rem; letter-spacing: .12em;
+      color: var(--wood-light); text-transform: uppercase; margin: .8rem 0 .3rem;
+    }
+
+    /* ── CONTENT ── */
+    .content { min-width: 0; }
+    section { margin-bottom: 3rem; animation: fadeUp .4s ease both; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .section-card {
+      background: rgba(46,36,27,.7); border: 1px solid rgba(122,85,51,.35);
+      border-radius: var(--r); padding: 1.8rem 2rem; backdrop-filter: blur(3px);
+    }
+    h2 {
+      font-family: 'Cinzel', serif; font-size: 1.35rem; font-weight: 700;
+      color: var(--torch-glow); margin-bottom: 1.2rem; padding-bottom: .6rem;
+      border-bottom: 1px solid rgba(122,85,51,.4);
+      display: flex; align-items: center; gap: .6rem;
+    }
+    h2 .icon { font-size: 1.1rem; }
+    h3 { font-family: 'Cinzel', serif; font-size: 1rem; color: var(--wood-light); margin: 1.4rem 0 .5rem; }
+    p { line-height: 1.75; font-size: 1.05rem; color: var(--cream); margin-bottom: .8rem; }
+
+    /* ── SCREENSHOT ── */
+    .screenshot {
+      width: 100%; aspect-ratio: 9/16; max-width: 200px;
+      border-radius: 12px; border: 2px solid var(--wood);
+      background: repeating-linear-gradient(45deg, rgba(255,255,255,.02) 0px, rgba(255,255,255,.02) 2px, transparent 2px, transparent 10px), var(--stone-warm);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .6rem;
+      color: var(--cream-dim); font-size: .85rem; text-align: center; padding: 1rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,.5); flex-shrink: 0;
+    }
+    .screenshot .icon { font-size: 2.5rem; opacity: .4; }
+    .screenshot-row { display: flex; gap: 1.5rem; align-items: flex-start; flex-wrap: wrap; margin: 1.2rem 0; }
+    .screenshot-row .text { flex: 1; min-width: 180px; }
+
+    /* ── BLOCK GRID ── */
+    .block-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(255px, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .block-card {
+      background: rgba(28,21,16,.6); border: 1px solid rgba(122,85,51,.3);
+      border-radius: var(--r); padding: 1rem 1.1rem;
+      display: flex; align-items: flex-start; gap: .9rem;
+      transition: transform .15s, border-color .15s;
+    }
+    .block-card:hover { transform: translateY(-2px); border-color: rgba(232,132,58,.5); }
+    .block-card.panic-card { border-color: rgba(255,48,48,.25); }
+    .block-card.panic-card:hover { border-color: rgba(255,48,48,.65); }
+    .block-chip {
+      width: 44px; height: 44px; border-radius: 8px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 1rem; color: rgba(0,0,0,.65);
+      box-shadow: inset 0 2px 0 rgba(255,255,255,.3), 0 3px 6px rgba(0,0,0,.4);
+      font-family: 'Cinzel', serif;
+    }
+    .block-info h4 { font-family: 'Cinzel', serif; font-size: .85rem; color: var(--cream); margin-bottom: .25rem; }
+    .block-info p  { font-size: .9rem; color: var(--cream-dim); margin: 0; line-height: 1.5; }
+    .chip-normal { background: linear-gradient(135deg, #e05050, #c03030); color: #fff !important; }
+    .chip-joker  { background: linear-gradient(135deg, #9b6fd4, #6a3fa0); color: #fff !important; }
+    .chip-bomb   { background: linear-gradient(135deg, #2a2a2a, #444); color: var(--torch-glow) !important; }
+    .chip-stone  { background: linear-gradient(135deg, #888, #555); color: #ccc !important; }
+    .chip-drill  { background: linear-gradient(135deg, #a0723f, #7a5533); color: #ffe !important; }
+    .chip-star   { background: linear-gradient(135deg, #f0c040, #c09000); }
+    .chip-zap    { background: linear-gradient(135deg, #4a90d9, #2060b0); color: #fff !important; font-size: .62rem !important; }
+    .chip-paint  { background: linear-gradient(135deg, #e06090, #a03060); color: #fff !important; }
+    .chip-panic  {
+      background: linear-gradient(135deg, #ff3030, #990000);
+      color: #fff !important; font-size: .78rem !important;
+      animation: panicPulse 1s ease-in-out infinite alternate;
+    }
+    @keyframes panicPulse {
+      0%   { box-shadow: inset 0 2px 0 rgba(255,255,255,.3), 0 3px 6px rgba(0,0,0,.4); }
+      100% { box-shadow: inset 0 2px 0 rgba(255,255,255,.3), 0 0 18px rgba(255,48,48,.75); }
+    }
+    .panic-box {
+      margin-top: 1rem; padding: 1rem 1.2rem;
+      border-radius: var(--r); border: 1px solid rgba(255,48,48,.4);
+      background: rgba(255,48,48,.08);
+      display: flex; gap: .8rem; align-items: flex-start;
+    }
+    .panic-box .pb-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .panic-box p { font-size: .95rem; color: var(--cream-dim); margin: 0; line-height: 1.6; }
+    .panic-box strong { color: var(--panic-red); }
+
+    /* ── SUPPLY DIAGRAM ── */
+    .supply-diagram {
+      margin: 1.2rem 0; padding: 1.2rem;
+      background: rgba(0,0,0,.2); border-radius: var(--r);
+      display: flex; flex-direction: column; align-items: center; gap: .8rem;
+    }
+    .supply-label { font-size: .78rem; color: var(--cream-dim); font-family: 'Cinzel', serif; letter-spacing: .12em; }
+    .supply-grid { display: grid; grid-template-columns: repeat(8, 32px); gap: 4px; }
+    .s-cell {
+      width: 32px; height: 32px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cinzel', serif; font-weight: 700; font-size: .75rem;
+      box-shadow: inset 0 2px 0 rgba(255,255,255,.25), 0 2px 4px rgba(0,0,0,.4);
+    }
+    .supply-arrow { font-size: 1.2rem; color: var(--torch-glow); animation: bounceDown .8s ease-in-out infinite alternate; }
+    @keyframes bounceDown { 0% { transform: translateY(-3px); } 100% { transform: translateY(3px); } }
+    .supply-caption { font-size: .85rem; color: var(--cream-dim); text-align: center; max-width: 340px; line-height: 1.5; }
+
+    /* ── SCALE DIAGRAM ── */
+    .scale-row {
+      display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center;
+      margin: 1.2rem 0; padding: 1.2rem;
+      background: rgba(0,0,0,.2); border-radius: var(--r);
+    }
+    .scale-unit { display: flex; flex-direction: column; align-items: center; gap: .4rem; }
+    .scale-cols { display: flex; gap: 4px; align-items: flex-end; }
+    .scale-col-wrap { display: flex; flex-direction: column; gap: 3px; align-items: center; }
+    .sc-block {
+      width: 28px; height: 22px; border-radius: 5px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .62rem; font-family: 'Cinzel', serif; font-weight: 700; color: rgba(0,0,0,.65);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.25);
+    }
+    .sc-block.empty { background: rgba(255,255,255,.04); border: 1px dashed rgba(255,255,255,.1); }
+    .scale-beam {
+      width: 64px; height: 6px; border-radius: 3px;
+      background: linear-gradient(90deg, var(--wood), var(--wood-light));
+      box-shadow: 0 2px 4px rgba(0,0,0,.4);
+    }
+    .beam-left  { transform: rotate(-11deg); }
+    .beam-even  { transform: rotate(0deg); }
+    .beam-right { transform: rotate(11deg); }
+    .scale-nums { font-family: 'Cinzel', serif; font-size: .7rem; color: var(--cream-dim); }
+    .scale-lbl  { font-family: 'Cinzel', serif; font-size: .72rem; }
+    .lbl-heavy  { color: var(--g-red); }
+    .lbl-even   { color: var(--g-green); }
+
+    /* ── MATCH / MERGE cards ── */
+    .mechanic-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; }
+    .mechanic-card {
+      flex: 1; min-width: 200px;
+      background: rgba(28,21,16,.6); border: 1px solid rgba(122,85,51,.3);
+      border-radius: var(--r); padding: 1.1rem 1.2rem;
+    }
+    .mechanic-card.m-match { border-color: rgba(86,184,112,.4); }
+    .mechanic-card.m-merge { border-color: rgba(240,192,64,.35); }
+    .mechanic-card h4 { font-family: 'Cinzel', serif; font-size: .95rem; margin-bottom: .5rem; }
+    .mechanic-card.m-match h4 { color: var(--g-green); }
+    .mechanic-card.m-merge h4 { color: var(--coin-gold); }
+    .mechanic-card p { font-size: .92rem; color: var(--cream-dim); margin: 0; line-height: 1.55; }
+
+    /* ── COINS ── */
+    .coin-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; }
+    .coin-card {
+      flex: 1; min-width: 155px;
+      background: rgba(28,21,16,.6); border: 1px solid rgba(240,192,64,.22);
+      border-radius: var(--r); padding: 1rem 1.1rem;
+      display: flex; align-items: flex-start; gap: .8rem;
+    }
+    .coin-icon { font-size: 1.5rem; flex-shrink: 0; line-height: 1.1; }
+    .coin-card h4 { font-family: 'Cinzel', serif; font-size: .85rem; color: var(--coin-gold); margin-bottom: .2rem; }
+    .coin-card p  { font-size: .9rem; color: var(--cream-dim); margin: 0; line-height: 1.5; }
+
+    /* ── TUTORIAL STEPS ── */
+    .tut-step {
+      display: flex; gap: 1rem; align-items: flex-start;
+      padding: .8rem 1rem; margin-bottom: .6rem;
+      background: rgba(0,0,0,.2); border-radius: var(--r);
+      border-left: 3px solid var(--wood);
+    }
+    .tut-num { font-family: 'Cinzel', serif; font-size: 1.1rem; font-weight: 700; color: var(--torch-glow); flex-shrink: 0; width: 1.6rem; text-align: center; }
+    .tut-step p { font-size: .95rem; color: var(--cream-dim); margin: 0; line-height: 1.6; }
+
+    /* ── DIFFICULTY ── */
+    .diff-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1rem; }
+    @media (max-width: 500px) { .diff-grid { grid-template-columns: 1fr; } }
+    .diff-card { border-radius: var(--r); padding: 1.1rem 1.2rem; border: 2px solid transparent; }
+    .diff-easy       { background: rgba(86,184,112,.10);  border-color: #56b870; }
+    .diff-normal     { background: rgba(232,196,58,.08);  border-color: #e8c43a; }
+    .diff-chaos      { background: rgba(224,80,80,.10);   border-color: #e05050; }
+    .diff-impossible { background: rgba(255,48,48,.06);   border-color: #ff3030; }
+    .diff-card .d-name { font-family: 'Cinzel', serif; font-size: .95rem; font-weight: 700; margin-bottom: .35rem; }
+    .diff-easy .d-name       { color: #56b870; }
+    .diff-normal .d-name     { color: #e8c43a; }
+    .diff-chaos .d-name      { color: #e05050; }
+    .diff-impossible .d-name { color: #ff3030; }
+    .diff-card p { font-size: .88rem; color: var(--cream-dim); margin: 0 0 .4rem; line-height: 1.5; }
+    .diff-card .d-mult {
+      display: inline-block; padding: .15rem .55rem; border-radius: 4px;
+      font-family: 'Cinzel', serif; font-size: .78rem;
+      background: rgba(0,0,0,.3); color: var(--cream);
+    }
+
+    /* ── TIPS ── */
+    .tip-list { list-style: none; margin-top: .8rem; }
+    .tip-list li {
+      padding: .55rem .8rem .55rem 2.2rem; margin-bottom: .5rem;
+      background: rgba(0,0,0,.2); border-radius: 6px;
+      font-size: 1rem; position: relative; border-left: 3px solid var(--torch); line-height: 1.6;
+    }
+    .tip-list li::before { content: '⚡'; position: absolute; left: .5rem; top: .55rem; font-size: .8rem; }
+
+    /* ── FOOTER ── */
+    footer { text-align: center; padding: 2rem; font-size: .85rem; color: var(--stone-light); border-top: 1px solid rgba(122,85,51,.2); }
+
+    /* ── LANG ── */
+    [data-lang] { display: none; }
+    .lang-de [data-lang="de"], .lang-en [data-lang="en"] { display: initial; }
+    .lang-de [data-lang="de"].block, .lang-en [data-lang="en"].block { display: block; }
+    .lang-neutral { display: block !important; }
+  </style>
+</head>
+<body class="lang-de">
+
+<header>
+  <div class="header-glow"></div>
+  <div class="header-inner">
+    <div class="logo-area">
+      <h1>Tiltfall</h1>
+      <span class="subtitle">
+        <span data-lang="de">Offizieller Spielführer</span>
+        <span data-lang="en">Official Game Guide</span>
+      </span>
+    </div>
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('de')" id="btn-de">DE</button>
+      <button class="lang-btn" onclick="setLang('en')" id="btn-en">EN</button>
+    </div>
+  </div>
+  <div class="torches">
+    <span class="torch">🔥</span><span class="torch">🔥</span><span class="torch">🔥</span>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar">
+    <h3><span data-lang="de">Inhalt</span><span data-lang="en">Contents</span></h3>
+    <nav>
+      <span class="nav-section"><span data-lang="de">Grundlagen</span><span data-lang="en">Basics</span></span>
+      <a href="#rules"><span data-lang="de">🎮 Spielprinzip</span><span data-lang="en">🎮 How to Play</span></a>
+      <a href="#scales"><span data-lang="de">⚖️ Waagen &amp; Kippen</span><span data-lang="en">⚖️ Scales &amp; Tilting</span></a>
+      <a href="#scoring"><span data-lang="de">⭐ Punkte &amp; Tempo</span><span data-lang="en">⭐ Score &amp; Speed</span></a>
+      <span class="nav-section"><span data-lang="de">Blöcke</span><span data-lang="en">Blocks</span></span>
+      <a href="#blocks"><span data-lang="de">🧱 Block-Typen</span><span data-lang="en">🧱 Block Types</span></a>
+      <span class="nav-section"><span data-lang="de">Spielmodi</span><span data-lang="en">Game Modes</span></span>
+      <a href="#campaign"><span data-lang="de">📖 Kampagne</span><span data-lang="en">📖 Campaign</span></a>
+      <a href="#freemode"><span data-lang="de">🕹️ Freies Spiel</span><span data-lang="en">🕹️ Free Play</span></a>
+      <a href="#difficulty"><span data-lang="de">🔥 Schwierigkeit</span><span data-lang="en">🔥 Difficulty</span></a>
+      <span class="nav-section"><span data-lang="de">Weiteres</span><span data-lang="en">More</span></span>
+      <a href="#coins"><span data-lang="de">🪙 Münzen</span><span data-lang="en">🪙 Coins</span></a>
+    </nav>
+  </aside>
+
+  <main class="content">
+
+    <!-- ══ SPIELPRINZIP ══ -->
+    <section id="rules">
+      <div class="section-card">
+        <h2><span class="icon">🎮</span>
+          <span data-lang="de">Spielprinzip</span>
+          <span data-lang="en">How to Play</span>
+        </h2>
+        <div class="screenshot-row">
+          <div class="screenshot">
+            <span class="icon">📸</span>
+            <span data-lang="de">Screenshot: Spielfeld</span>
+            <span data-lang="en">Screenshot: Game Board</span>
+          </div>
+          <div class="text">
+            <p data-lang="de" class="block">
+              Tiltfall ist ein Puzzle-Spiel mit <strong>8 Spalten</strong> und <strong>4 Waagen</strong>. Wirf farbige Blöcke in die Spalten und bringe mindestens 3 gleiche Farben auf dieselbe Höhe — das ist ein <strong>Match</strong> und der wichtigste Weg, Punkte zu sammeln. Das Spiel endet, wenn eine Spalte zu voll wird.
+            </p>
+            <p data-lang="en" class="block">
+              Tiltfall is a puzzle game with <strong>8 columns</strong> and <strong>4 scales</strong>. Drop coloured blocks into columns and get at least 3 of the same colour at the same height — that's a <strong>match</strong> and the primary way to score. The game ends when any column overflows.
+            </p>
+          </div>
+        </div>
+
+        <h3 data-lang="de">Das Supply</h3>
+        <h3 data-lang="en">The Supply</h3>
+        <p data-lang="de" class="block">
+          Über dem Spielfeld liegen <strong>2 Reihen à 8 Slots</strong> — das Supply. Jede Spalte hat ihren eigenen Vorrats-Slot direkt darüber. Wenn du in eine Spalte droppst, wird automatisch der nächste Block aus diesem Slot nachgezogen. Du kannst so immer sehen, was als nächstes kommt.
+        </p>
+        <p data-lang="en" class="block">
+          Above the board are <strong>2 rows of 8 slots</strong> — the supply. Each column has its own supply slot directly above it. When you drop into a column, the next block is automatically drawn from that slot. You can always see what's coming next.
+        </p>
+        <div class="supply-diagram lang-neutral">
+          <div class="supply-label">SUPPLY</div>
+          <div class="supply-grid">
+            <div class="s-cell" style="background:linear-gradient(135deg,#9b6fd4,#6a3fa0);color:#fff">7</div>
+            <div class="s-cell" style="background:linear-gradient(135deg,#9b6fd4,#6a3fa0);color:#fff">7</div>
+            <div class="s-cell" style="background:linear-gradient(135deg,#3ab8b0,#1a8880)">10</div>
+            <div class="s-cell" style="background:linear-gradient(135deg,#e87a30,#b05010);color:#fff">8</div>
+            <div class="s-cell" style="background:linear-gradient(135deg,#e87a30,#b05010);color:#fff">10</div>
+            <div class="s-cell" style="background:linear-gradient(135deg,#e05050,#c03030);color:#fff">1</div>
+            <div class="s-cell" style="background:linear-gradient(135deg,#56b870,#2a8040)">6</div>
+            <div class="s-cell" style="background:linear-gradient(135deg,#9b6fd4,#6a3fa0);color:#fff">7</div>
+          </div>
+          <div class="supply-grid">
+            <div class="s-cell" style="background:linear-gradient(135deg,#56b870,#2a8040)">6</div>
+            <div class="s-cell" style="background:linear-gradient(135deg,#e05050,#c03030);color:#fff">1</div>
+            <div class="s-cell" style="background:linear-gradient(135deg,#e8c43a,#b09000)">4</div>
+            <div class="s-cell" style="background:linear-gradient(135deg,#4a90d9,#2060b0);color:#fff">5</div>
+            <div class="s-cell" style="background:linear-gradient(135deg,#3ab8b0,#1a8880)">10</div>
+            <div class="s-cell" style="background:linear-gradient(135deg,#e05050,#c03030);color:#fff">2</div>
+            <div class="s-cell" style="background:linear-gradient(135deg,#888,#555);color:#ccc">9</div>
+            <div class="s-cell" style="background:linear-gradient(135deg,#56b870,#2a8040)">6</div>
+          </div>
+          <div class="supply-arrow">▼</div>
+          <p class="supply-caption">
+            <span data-lang="de">Wische links/rechts um den Greifer zu bewegen. Wische nach unten oder tippe auf eine Spalte um zu droppen.</span>
+            <span data-lang="en">Swipe left/right to move the claw. Swipe down or tap a column to drop.</span>
+          </p>
+        </div>
+
+        <h3 data-lang="de">Match &amp; Merge</h3>
+        <h3 data-lang="en">Match &amp; Merge</h3>
+        <div class="mechanic-row lang-neutral">
+          <div class="mechanic-card m-match">
+            <h4 data-lang="de">⚡ Match — das Wichtigste</h4>
+            <h4 data-lang="en">⚡ Match — the Main Event</h4>
+            <p data-lang="de">3 oder mehr Blöcke <strong>gleicher Farbe auf gleicher Höhe</strong> → sie verschwinden sofort. Je mehr Blöcke im Match und je höher ihr Gewicht, desto mehr Punkte. Matches sind die wichtigste Mechanik im Spiel!</p>
+            <p data-lang="en">3 or more blocks of <strong>the same colour at the same height</strong> → they disappear instantly. More blocks in the match and higher weight = more points. Matches are the most important mechanic in the game!</p>
+          </div>
+          <div class="mechanic-card m-merge">
+            <h4 data-lang="de">🔗 Merge — taktisches Werkzeug</h4>
+            <h4 data-lang="en">🔗 Merge — Tactical Tool</h4>
+            <p data-lang="de">5 Blöcke <strong>gleicher Farbe übereinander in einer Spalte</strong> kollabieren zu einem schweren Block. Sein Gewicht = Summe der Einzelgewichte. Nützlich um Platz zu schaffen oder Gewicht zu bündeln.</p>
+            <p data-lang="en">5 blocks of <strong>the same colour stacked in one column</strong> collapse into a single heavy block. Its weight = the sum of all individual weights. Useful to free up space or concentrate weight.</p>
+          </div>
+        </div>
+
+        <h3 data-lang="de">Kettenreaktionen</h3>
+        <h3 data-lang="en">Chain Reactions</h3>
+        <p data-lang="de" class="block">
+          Immer wenn sich das Gewicht einer Waage verändert, prüft das Spiel ob sie kippt — egal ob durch einen normalen Drop, einen einfliegenden Block, einen Match, einen Merge oder eine Spezialaktion. Kippt die Waage dabei stark genug, wird der oberste Block der leichteren Seite in eine Nachbarspalte geschleudert. Landet er dort und löst einen neuen Match aus, entsteht eine <strong>Kettenreaktion</strong>. Je größer der Gewichtsunterschied, desto weiter fliegt der Block. Landet er außerhalb des Boards, kommt er als <strong>Bombe</strong> zurück!
+        </p>
+        <p data-lang="en" class="block">
+          Whenever a scale's weight changes, the game checks whether it tips — triggered by a normal drop, an incoming flying block, a match, a merge, or a special action. If the scale tips far enough, the topmost block on the lighter side is flung into a neighbouring column. If it lands there and triggers a new match, a <strong>chain reaction</strong> occurs. The greater the weight difference, the farther the block flies. If it lands outside the board, it comes back as a <strong>bomb</strong>!
+        </p>
+
+        <h3 data-lang="de">Game Over</h3>
+        <h3 data-lang="en">Game Over</h3>
+        <p data-lang="de" class="block">
+          Das Spiel endet, wenn eine Spalte voll ist und kein weiterer Block platziert werden kann. Je nach Kipprichtung der Waage fasst eine Spalte <strong>6 bis 8 Blöcke</strong> — die tiefere (schwerere) Seite bietet mehr Platz.
+        </p>
+        <p data-lang="en" class="block">
+          The game ends when a column is full and no more blocks can be placed. Depending on the scale's tilt, a column holds <strong>6 to 8 blocks</strong> — the lower (heavier) side offers more space.
+        </p>
+
+        <ul class="tip-list lang-neutral">
+          <li><span data-lang="de">Matches sind das A und O — plane jeden Drop so, dass er eine Farbgruppe auf gleiche Höhe bringt.</span><span data-lang="en">Matches are everything — plan every drop to align colours at the same height.</span></li>
+          <li><span data-lang="de">Nutze das Kippen aktiv: ein schwerer Block auf einer Seite kann Kettenreaktionen in Nachbarspalten auslösen.</span><span data-lang="en">Use tilting actively: a heavy block on one side can trigger chain reactions in neighbouring columns.</span></li>
+          <li><span data-lang="de">Merges sind dein Notnagel wenn eine Spalte zu voll wird — 5 Blöcke werden zu einem.</span><span data-lang="en">Merges are your emergency move when a column fills up — 5 blocks become one.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ══ WAAGEN ══ -->
+    <section id="scales">
+      <div class="section-card">
+        <h2><span class="icon">⚖️</span>
+          <span data-lang="de">Waagen &amp; Kippen</span>
+          <span data-lang="en">Scales &amp; Tilting</span>
+        </h2>
+        <p data-lang="de" class="block">
+          Je zwei Spalten teilen sich eine Waage — insgesamt gibt es 4 Waagen. Das Gewicht einer Spalte ist die Summe aller Blockzahlen darin. Die schwerere Seite sinkt, die leichtere steigt. Waagen können nach links, rechts oder im Gleichgewicht stehen.
+        </p>
+        <p data-lang="en" class="block">
+          Every two columns share one scale — 4 scales in total. A column's weight is the sum of all block numbers in it. The heavier side sinks, the lighter side rises. Scales can lean left, right, or be balanced.
+        </p>
+
+        <div class="scale-row lang-neutral">
+          <div class="scale-unit">
+            <div class="scale-cols">
+              <div class="scale-col-wrap">
+                <div class="sc-block" style="background:linear-gradient(135deg,#e05050,#c03030);color:#fff">3</div>
+                <div class="sc-block" style="background:linear-gradient(135deg,#9b6fd4,#6a3fa0);color:#fff">5</div>
+                <div class="sc-block" style="background:linear-gradient(135deg,#56b870,#2a8040)">4</div>
+              </div>
+              <div class="scale-col-wrap">
+                <div class="sc-block empty"></div>
+                <div class="sc-block" style="background:linear-gradient(135deg,#e8c43a,#b09000)">2</div>
+              </div>
+            </div>
+            <div class="scale-beam beam-left"></div>
+            <div class="scale-nums">12 vs 2</div>
+            <div class="scale-lbl lbl-heavy" data-lang="de">Links schwerer → sinkt</div>
+            <div class="scale-lbl lbl-heavy" data-lang="en">Left heavier → sinks</div>
+          </div>
+          <div class="scale-unit">
+            <div class="scale-cols">
+              <div class="scale-col-wrap">
+                <div class="sc-block" style="background:linear-gradient(135deg,#4a90d9,#2060b0);color:#fff">5</div>
+                <div class="sc-block" style="background:linear-gradient(135deg,#e87a30,#b05010);color:#fff">3</div>
+              </div>
+              <div class="scale-col-wrap">
+                <div class="sc-block" style="background:linear-gradient(135deg,#3ab8b0,#1a8880)">4</div>
+                <div class="sc-block" style="background:linear-gradient(135deg,#e05050,#c03030);color:#fff">4</div>
+              </div>
+            </div>
+            <div class="scale-beam beam-even"></div>
+            <div class="scale-nums">8 vs 8</div>
+            <div class="scale-lbl lbl-even" data-lang="de">Ausgeglichen</div>
+            <div class="scale-lbl lbl-even" data-lang="en">Balanced</div>
+          </div>
+          <div class="scale-unit">
+            <div class="scale-cols">
+              <div class="scale-col-wrap">
+                <div class="sc-block empty"></div>
+                <div class="sc-block" style="background:linear-gradient(135deg,#9b6fd4,#6a3fa0);color:#fff">1</div>
+              </div>
+              <div class="scale-col-wrap">
+                <div class="sc-block" style="background:linear-gradient(135deg,#56b870,#2a8040)">6</div>
+                <div class="sc-block" style="background:linear-gradient(135deg,#e8c43a,#b09000)">5</div>
+                <div class="sc-block" style="background:linear-gradient(135deg,#e05050,#c03030);color:#fff">3</div>
+              </div>
+            </div>
+            <div class="scale-beam beam-right"></div>
+            <div class="scale-nums">1 vs 14</div>
+            <div class="scale-lbl lbl-heavy" data-lang="de">Rechts schwerer → sinkt</div>
+            <div class="scale-lbl lbl-heavy" data-lang="en">Right heavier → sinks</div>
+          </div>
+        </div>
+
+        <h3 data-lang="de">Kippen als Strategie</h3>
+        <h3 data-lang="en">Tilting as Strategy</h3>
+        <p data-lang="de" class="block">
+          Das Kippen ist kein Problem — es ist ein Werkzeug. Die tiefere Seite einer Waage fasst bis zu 8 Blöcke, die höhere nur 6. Nutze das um Platz zu schaffen. Noch wichtiger: Eine gekippte Waage <strong>katapultiert Blöcke in Nachbarspalten</strong> und kann so Matches auslösen oder störende Steine rauswerfen.
+        </p>
+        <p data-lang="en" class="block">
+          Tilting isn't a problem — it's a tool. The lower side of a scale holds up to 8 blocks, the higher side only 6. Use that to create space. More importantly: a tilted scale <strong>flings blocks into neighbouring columns</strong>, potentially triggering matches or ejecting unwanted stones.
+        </p>
+      </div>
+    </section>
+
+    <!-- ══ PUNKTE & TEMPO ══ -->
+    <section id="scoring">
+      <div class="section-card">
+        <h2><span class="icon">⭐</span>
+          <span data-lang="de">Punkte &amp; Tempo-Bonus</span>
+          <span data-lang="en">Score &amp; Speed Bonus</span>
+        </h2>
+        <p data-lang="de" class="block">
+          Punkte kommen hauptsächlich durch Matches. Je mehr Blöcke in einem Match und je höher ihr Gewicht (die angezeigte Zahl), desto mehr Punkte gibt es.
+        </p>
+        <p data-lang="en" class="block">
+          Points come primarily from matches. The more blocks in a match and the higher their weight (the number shown), the more points you earn.
+        </p>
+
+        <h3 data-lang="de">Tempo-Multiplikator (×1 bis ×3)</h3>
+        <h3 data-lang="en">Speed Multiplier (×1 to ×3)</h3>
+        <p data-lang="de" class="block">
+          Oben links im HUD siehst du den aktuellen Multiplikator und einen Zeitbalken. Wenn du Matches schnell hintereinander erzielst, steigt der Multiplikator auf <strong>×2</strong> und dann <strong>×3</strong>. Läuft der Balken ab, bevor der nächste Match gelingt, fällt er wieder auf ×1. Schnelles, konsequentes Spielen wird also großzügig belohnt!
+        </p>
+        <p data-lang="en" class="block">
+          In the top-left HUD you see the current multiplier and a time bar. Score matches quickly in succession and the multiplier rises to <strong>×2</strong> then <strong>×3</strong>. If the bar runs out before your next match, it resets to ×1. Fast, consistent play is generously rewarded!
+        </p>
+      </div>
+    </section>
+
+    <!-- ══ BLOCK-TYPEN ══ -->
+    <section id="blocks">
+      <div class="section-card">
+        <h2><span class="icon">🧱</span>
+          <span data-lang="de">Block-Typen</span>
+          <span data-lang="en">Block Types</span>
+        </h2>
+        <p data-lang="de" class="block">Neben normalen Farbblöcken gibt es Spezialblöcke, die das Spiel aufmischen:</p>
+        <p data-lang="en" class="block">Alongside normal colour blocks, there are special blocks that shake things up:</p>
+
+        <h3 data-lang="de">Normale Blöcke</h3>
+        <h3 data-lang="en">Normal Blocks</h3>
+        <div class="block-grid lang-neutral">
+          <div class="block-card">
+            <div class="block-chip chip-normal">4</div>
+            <div class="block-info">
+              <h4 data-lang="de">Farbblock</h4><h4 data-lang="en">Colour Block</h4>
+              <p data-lang="de">Der Grundbaustein. Die Zahl ist sein Gewicht. 3+ gleiche Farben auf gleicher Höhe → Match!</p>
+              <p data-lang="en">The basic building block. The number is its weight. 3+ same colour at the same height → match!</p>
+            </div>
+          </div>
+          <div class="block-card">
+            <div class="block-chip chip-joker">J</div>
+            <div class="block-info">
+              <h4>Joker</h4>
+              <p data-lang="de">Passt zu <em>jeder</em> Farbe. Kann einen Match vervollständigen oder als Brücke zwischen zwei Gruppen dienen.</p>
+              <p data-lang="en">Matches <em>any</em> colour. Can complete a match or bridge two colour groups.</p>
+            </div>
+          </div>
+        </div>
+
+        <h3 data-lang="de">Spezialblöcke</h3>
+        <h3 data-lang="en">Special Blocks</h3>
+        <div class="block-grid lang-neutral">
+          <div class="block-card">
+            <div class="block-chip chip-bomb">💣</div>
+            <div class="block-info">
+              <h4 data-lang="de">Bombe</h4><h4 data-lang="en">Bomb</h4>
+              <p data-lang="de">Explodiert beim Landen und räumt einen <strong>3×3 Bereich</strong> frei. Wird auch erzeugt, wenn ein Block durch eine Kettenreaktion vom Board katapultiert wird.</p>
+              <p data-lang="en">Explodes on landing and clears a <strong>3×3 area</strong>. Also created when a block is flung off the board by a chain reaction.</p>
+            </div>
+          </div>
+          <div class="block-card">
+            <div class="block-chip chip-stone">🪨</div>
+            <div class="block-info">
+              <h4 data-lang="de">Steinblock</h4><h4 data-lang="en">Stone Block</h4>
+              <p data-lang="de">Kann nicht gematcht werden und blockiert alles darunter. Entfernen: Bombe (3×3), Drill, oder durch gezieltes Kippen vom Board katapultieren.</p>
+              <p data-lang="en">Cannot be matched and blocks everything below. Remove with: bomb (3×3), drill, or fling off the board by deliberate tilting.</p>
+            </div>
+          </div>
+          <div class="block-card">
+            <div class="block-chip chip-drill">🔩</div>
+            <div class="block-info">
+              <h4>Drill</h4>
+              <p data-lang="de">Bohrt sich durch eine ganze Spalte und entfernt <strong>alle Blöcke darin</strong> — von oben bis unten. Ideal für überfüllte Spalten.</p>
+              <p data-lang="en">Drills through an entire column and removes <strong>all blocks in it</strong> — top to bottom. Ideal for overloaded columns.</p>
+            </div>
+          </div>
+          <div class="block-card">
+            <div class="block-chip chip-star">★</div>
+            <div class="block-info">
+              <h4 data-lang="de">Stern</h4><h4 data-lang="en">Star</h4>
+              <p data-lang="de">2 Sterne übereinander → Goldstern. 3 Sterne nebeneinander → <strong>Board-Clear</strong>: alle Blöcke verschwinden, alle Punkte werden kassiert!</p>
+              <p data-lang="en">2 stars stacked → gold star. 3 stars side by side → <strong>board clear</strong>: all blocks vanish and all points are collected!</p>
+            </div>
+          </div>
+          <div class="block-card">
+            <div class="block-chip chip-zap">ZAP</div>
+            <div class="block-info">
+              <h4>Color ZAP</h4>
+              <p data-lang="de">Lande ihn auf einer Spalte um alle Blöcke dieser Farbe auf dem Board zu löschen. Oder wirf einen Block drauf um die Zielfarbe zu wählen.</p>
+              <p data-lang="en">Land it on a column to delete all blocks of that column's colour from the board. Or drop a block onto it to choose the target colour.</p>
+            </div>
+          </div>
+          <div class="block-card">
+            <div class="block-chip chip-paint">🎨</div>
+            <div class="block-info">
+              <h4>Color Painter</h4>
+              <p data-lang="de">Wirf ihn auf einen farbigen Block — alle 8 Slots der untersten Supply-Reihe nehmen diese Farbe an. Perfekt um sofort Match-Chancen zu schaffen.</p>
+              <p data-lang="en">Drop it onto a coloured block — all 8 slots of the bottom supply row take on that colour. Perfect for instantly creating match opportunities.</p>
+            </div>
+          </div>
+        </div>
+
+        <h3 data-lang="de">⚠️ Panik-Block</h3>
+        <h3 data-lang="en">⚠️ Panic Block</h3>
+        <div class="block-grid lang-neutral" style="grid-template-columns:1fr">
+          <div class="block-card panic-card">
+            <div class="block-chip chip-panic">10s</div>
+            <div class="block-info">
+              <h4 data-lang="de">Panik-Block</h4><h4 data-lang="en">Panic Block</h4>
+              <p data-lang="de">Landet er auf dem Board, tickt er von 10 auf 0 herunter — und nimmt dabei Gewicht auf der Waage auf. Bei 0 löst er einen <strong style="color:var(--panic-red)">30-sekündigen Panik-Modus</strong> aus. Zerstöre ihn rechtzeitig mit einer Bombe oder durch Matching!</p>
+              <p data-lang="en">When it lands on the board, it counts down from 10 to 0 — adding weight to the scale as it ticks. At 0 it triggers a <strong style="color:var(--panic-red)">30-second panic mode</strong>. Destroy it in time with a bomb or by matching!</p>
+            </div>
+          </div>
+        </div>
+        <div class="panic-box lang-neutral">
+          <span class="pb-icon">🚨</span>
+          <div>
+            <p data-lang="de"><strong>Panik-Modus (30 Sek.):</strong> Das Spiel dreht auf! Jeder Block im Greifer wird automatisch nach <strong>3 Sekunden</strong> fallen gelassen — ob du bereit bist oder nicht. Plane blitzschnell, handle noch schneller.</p>
+            <p data-lang="en"><strong>Panic Mode (30 sec):</strong> The game goes haywire! Every block in the claw is automatically dropped after <strong>3 seconds</strong> — whether you're ready or not. Think lightning-fast, act even faster.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ KAMPAGNE ══ -->
+    <section id="campaign">
+      <div class="section-card">
+        <h2><span class="icon">📖</span>
+          <span data-lang="de">Kampagne</span>
+          <span data-lang="en">Campaign</span>
+        </h2>
+        <div class="screenshot-row">
+          <div class="screenshot">
+            <span class="icon">📸</span>
+            <span data-lang="de">Screenshot: Kampagne</span>
+            <span data-lang="en">Screenshot: Campaign</span>
+          </div>
+          <div class="text">
+            <p data-lang="de" class="block">
+              Die Kampagne führt dich in <strong>20 Leveln</strong> durch alle Mechaniken von Tiltfall — von einfachen Drop-Aufgaben bis zu komplexen Kombinationen mit Panik-Block. Jedes Level hat ein klares Ziel, das du erfüllen musst.
+            </p>
+            <p data-lang="en" class="block">
+              The campaign guides you through <strong>20 levels</strong> covering all of Tiltfall's mechanics — from simple drop tasks to complex combinations with the panic block. Each level has a clear objective to meet.
+            </p>
+            <p data-lang="de" class="block">
+              <strong style="color:var(--coin-gold)">Belohnung:</strong> Wer alle 20 Level abschließt, schaltet das <strong>Gold-Wallet</strong> frei — das Münzen-Maximum steigt dauerhaft von <strong>3 auf 5 Münzen</strong>!
+            </p>
+            <p data-lang="en" class="block">
+              <strong style="color:var(--coin-gold)">Reward:</strong> Completing all 20 levels unlocks the <strong>Gold Wallet</strong> — the coin maximum increases permanently from <strong>3 to 5 coins</strong>!
+            </p>
+          </div>
+        </div>
+
+        <h3 data-lang="de">Level-Ziele (Auswahl)</h3>
+        <h3 data-lang="en">Level Objectives (Examples)</h3>
+        <div class="tut-step"><span class="tut-num">🎯</span>
+          <p><span data-lang="de"><strong>Blöcke droppen</strong> — Wirf eine bestimmte Anzahl Blöcke.</span><span data-lang="en"><strong>Drop blocks</strong> — Drop a set number of blocks.</span></p>
+        </div>
+        <div class="tut-step"><span class="tut-num">🎯</span>
+          <p><span data-lang="de"><strong>Matches</strong> — Erziele eine Anzahl Matches.</span><span data-lang="en"><strong>Matches</strong> — Score a certain number of matches.</span></p>
+        </div>
+        <div class="tut-step"><span class="tut-num">🎯</span>
+          <p><span data-lang="de"><strong>Score</strong> — Erreiche einen bestimmten Punktestand.</span><span data-lang="en"><strong>Score</strong> — Reach a target score.</span></p>
+        </div>
+        <div class="tut-step"><span class="tut-num">🎯</span>
+          <p><span data-lang="de"><strong>Kettenreaktionen</strong> — Löse Ketten durch geschicktes Kippen aus.</span><span data-lang="en"><strong>Chain reactions</strong> — Trigger chains through clever tilting.</span></p>
+        </div>
+        <div class="tut-step"><span class="tut-num">🎯</span>
+          <p><span data-lang="de"><strong>Board leeren</strong> — Räume das Board komplett via Stern-Clear.</span><span data-lang="en"><strong>Board clear</strong> — Clear the entire board via star clear.</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ FREIES SPIEL ══ -->
+    <section id="freemode">
+      <div class="section-card">
+        <h2><span class="icon">🕹️</span>
+          <span data-lang="de">Freies Spiel</span>
+          <span data-lang="en">Free Play</span>
+        </h2>
+        <div class="screenshot-row">
+          <div class="screenshot">
+            <span class="icon">📸</span>
+            <span data-lang="de">Screenshot: Freies Spiel</span>
+            <span data-lang="en">Screenshot: Free Play</span>
+          </div>
+          <div class="text">
+            <p data-lang="de" class="block">
+              Im freien Spiel gibt es kein festes Ziel — spiel einfach so lange, bis eine Spalte überläuft. Dein Highscore wird gespeichert und in der <strong>Google Play Rangliste</strong> angezeigt.
+            </p>
+            <p data-lang="en" class="block">
+              In free play there is no fixed objective — just play until a column overflows. Your high score is saved and displayed on the <strong>Google Play leaderboard</strong>.
+            </p>
+            <p data-lang="de" class="block">
+              Alle Spezialblöcke können erscheinen. Neue Farben werden je nach Schwierigkeitsgrad nach und nach eingeführt — je weiter du kommst, desto bunter und anspruchsvoller wird das Feld.
+            </p>
+            <p data-lang="en" class="block">
+              All special blocks can appear. New colours are introduced gradually depending on difficulty — the further you get, the more varied and challenging the board becomes.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ SCHWIERIGKEIT ══ -->
+    <section id="difficulty">
+      <div class="section-card">
+        <h2><span class="icon">🔥</span>
+          <span data-lang="de">Schwierigkeitsgrade</span>
+          <span data-lang="en">Difficulty Levels</span>
+        </h2>
+        <p data-lang="de" class="block">
+          Beim Start eines freien Spiels wählst du einen Schwierigkeitsgrad. Er bestimmt, wie viele Startfarben es gibt, wie schnell neue Farben hinzukommen und wie hoch dein Score-Multiplikator ist.
+        </p>
+        <p data-lang="en" class="block">
+          When starting a free game you choose a difficulty. It determines how many starting colours there are, how quickly new colours are added, and how high your score multiplier is.
+        </p>
+        <div class="diff-grid lang-neutral">
+          <div class="diff-card diff-easy">
+            <div class="d-name">Entspannt</div>
+            <p data-lang="de">3 Startfarben · neue Farbe alle 100 Blöcke</p>
+            <p data-lang="en">3 starting colours · new colour every 100 blocks</p>
+            <span class="d-mult">Score ×0.5</span>
+          </div>
+          <div class="diff-card diff-normal">
+            <div class="d-name">Normal</div>
+            <p data-lang="de">4 Startfarben · neue Farbe alle 50 Blöcke</p>
+            <p data-lang="en">4 starting colours · new colour every 50 blocks</p>
+            <span class="d-mult">Score ×1</span>
+          </div>
+          <div class="diff-card diff-chaos">
+            <div class="d-name">Chaos</div>
+            <p data-lang="de">5 Startfarben · neue Farbe alle 25 Blöcke</p>
+            <p data-lang="en">5 starting colours · new colour every 25 blocks</p>
+            <span class="d-mult">Score ×2</span>
+          </div>
+          <div class="diff-card diff-impossible">
+            <div class="d-name">Impossible</div>
+            <p data-lang="de">Wie Chaos — aber Blöcke fallen automatisch nach <strong>3 Sekunden</strong>! Nur für absolute Profis.</p>
+            <p data-lang="en">Like Chaos — but blocks drop automatically after <strong>3 seconds</strong>! For absolute experts only.</p>
+            <span class="d-mult">Score ×5</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ MÜNZEN ══ -->
+    <section id="coins">
+      <div class="section-card">
+        <h2><span class="icon">🪙</span>
+          <span data-lang="de">Münzen</span>
+          <span data-lang="en">Coins</span>
+        </h2>
+        <p data-lang="de" class="block">
+          Münzen sind nötig um zu spielen. Du startest mit maximal <strong>3 Münzen</strong> (nach Abschluss der Kampagne: <strong>5</strong>).
+        </p>
+        <p data-lang="en" class="block">
+          Coins are needed to play. You start with a maximum of <strong>3 coins</strong> (after completing the campaign: <strong>5</strong>).
+        </p>
+
+        <h3 data-lang="de">Münzen verdienen</h3>
+        <h3 data-lang="en">Earning Coins</h3>
+        <div class="coin-row lang-neutral">
+          <div class="coin-card">
+            <span class="coin-icon">⏱️</span>
+            <div>
+              <h4 data-lang="de">Stündliche Aufladung</h4><h4 data-lang="en">Hourly Recharge</h4>
+              <p data-lang="de">Alle 60 Minuten wird automatisch +1 Münze aufgeladen — bis zum Maximum.</p>
+              <p data-lang="en">Every 60 minutes +1 coin is automatically added — up to the maximum.</p>
+            </div>
+          </div>
+          <div class="coin-card">
+            <span class="coin-icon">📺</span>
+            <div>
+              <h4 data-lang="de">Werbevideo</h4><h4 data-lang="en">Ad Video</h4>
+              <p data-lang="de">Schau ein kurzes Video und erhalte sofort +1 Münze — ohne Wartezeit.</p>
+              <p data-lang="en">Watch a short video and receive +1 coin immediately — no waiting.</p>
+            </div>
+          </div>
+        </div>
+
+        <h3 data-lang="de">Münzen ausgeben</h3>
+        <h3 data-lang="en">Spending Coins</h3>
+        <div class="coin-row lang-neutral">
+          <div class="coin-card">
+            <span class="coin-icon">🎮</span>
+            <div>
+              <h4 data-lang="de">Spiel starten</h4><h4 data-lang="en">Start a Game</h4>
+              <p data-lang="de">Jedes neue freie Spiel kostet <strong>1 Münze</strong>.</p>
+              <p data-lang="en">Every new free game costs <strong>1 coin</strong>.</p>
+            </div>
+          </div>
+          <div class="coin-card">
+            <span class="coin-icon">➕</span>
+            <div>
+              <h4 data-lang="de">Weiterspielen</h4><h4 data-lang="en">Continue Playing</h4>
+              <p data-lang="de">Alle <strong>500 Drops</strong> kostet das Weiterspielen 1 Münze — oder alternativ ein Werbevideo.</p>
+              <p data-lang="en">Every <strong>500 drops</strong>, continuing costs 1 coin — or a short ad video instead.</p>
+            </div>
+          </div>
+        </div>
+
+        <p data-lang="de" class="block" style="margin-top:1.2rem">
+          <strong>Tipp:</strong> Wer die Kampagne abschließt, erhöht das Münzen-Maximum dauerhaft auf 5 — und kann damit länger am Stück spielen.
+        </p>
+        <p data-lang="en" class="block" style="margin-top:1.2rem">
+          <strong>Tip:</strong> Completing the campaign permanently raises the coin maximum to 5 — letting you play longer in one session.
+        </p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <p>© 2026 ArTee Games &nbsp;·&nbsp;
+    <span data-lang="de">Alle Rechte vorbehalten</span>
+    <span data-lang="en">All rights reserved</span>
+  </p>
+  <p style="margin-top:.4rem">
+    <span data-lang="de">Fragen? Schreib uns über den Store.</span>
+    <span data-lang="en">Questions? Contact us via the store listing.</span>
+  </p>
+</footer>
+
+<script>
+  function setLang(lang) {
+    document.body.className = 'lang-' + lang;
+    document.getElementById('btn-de').classList.toggle('active', lang === 'de');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.documentElement.lang = lang;
+  }
+  (function() {
+    const bl = navigator.language || navigator.userLanguage || 'de';
+    if (bl.startsWith('en')) setLang('en');
+  })();
+</script>
+</body>
+</html>
