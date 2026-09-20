@@ -145,6 +145,12 @@
       box-shadow: 0 4px 20px rgba(0,0,0,.5); flex-shrink: 0;
     }
     .screenshot .icon { font-size: 2.5rem; opacity: .4; }
+    .screenshot-img {
+      width: 100%; aspect-ratio: 9/16; max-width: 200px;
+      border-radius: 12px; border: 2px solid var(--wood);
+      object-fit: cover; display: block; flex-shrink: 0;
+      box-shadow: 0 4px 20px rgba(0,0,0,.5);
+    }
     .screenshot-row { display: flex; gap: 1.5rem; align-items: flex-start; flex-wrap: wrap; margin: 1.2rem 0; }
     .screenshot-row .text { flex: 1; min-width: 180px; }
 
@@ -367,12 +373,8 @@
           <span data-lang="de">Spielprinzip</span>
           <span data-lang="en">How to Play</span>
         </h2>
-        <div class="screenshot-row">
-          <div class="screenshot">
-            <span class="icon">📸</span>
-            <span data-lang="de">Screenshot: Spielfeld</span>
-            <span data-lang="en">Screenshot: Game Board</span>
-          </div>
+          <div class="screenshot-row">
+          <img class="screenshot-img" src="screenshots/board.png" alt="Tiltfall – Spielfeld / Game board" loading="lazy">
           <div class="text">
             <p data-lang="de" class="block">
               Tiltfall ist ein Puzzle-Spiel mit <strong>8 Spalten</strong> und <strong>4 Waagen</strong>. Wirf farbige Blöcke in die Spalten und bringe mindestens 3 gleiche Farben auf dieselbe Höhe — das ist ein <strong>Match</strong> und der wichtigste Weg, Punkte zu sammeln. Das Spiel endet, wenn eine Spalte zu voll wird.
@@ -680,11 +682,7 @@
           <span data-lang="en">Campaign</span>
         </h2>
         <div class="screenshot-row">
-          <div class="screenshot">
-            <span class="icon">📸</span>
-            <span data-lang="de">Screenshot: Kampagne</span>
-            <span data-lang="en">Screenshot: Campaign</span>
-          </div>
+          <img class="screenshot-img" src="screenshots/campaign.png" alt="Tiltfall – Kampagne / Campaign" loading="lazy">
           <div class="text">
             <p data-lang="de" class="block">
               Die Kampagne führt dich in <strong>20 Leveln</strong> durch alle Mechaniken von Tiltfall — von einfachen Drop-Aufgaben bis zu komplexen Kombinationen mit Panik-Block. Jedes Level hat ein klares Ziel, das du erfüllen musst.
@@ -729,11 +727,7 @@
           <span data-lang="en">Free Play</span>
         </h2>
         <div class="screenshot-row">
-          <div class="screenshot">
-            <span class="icon">📸</span>
-            <span data-lang="de">Screenshot: Freies Spiel</span>
-            <span data-lang="en">Screenshot: Free Play</span>
-          </div>
+          <img class="screenshot-img" src="screenshots/freeplay.png" alt="Tiltfall – Freies Spiel / Free Play" loading="lazy">
           <div class="text">
             <p data-lang="de" class="block">
               Im freien Spiel gibt es kein festes Ziel — spiel einfach so lange, bis eine Spalte überläuft. Dein Highscore wird gespeichert und in der <strong>Google Play Rangliste</strong> angezeigt.
@@ -868,8 +862,8 @@
     <span data-lang="en">All rights reserved</span>
   </p>
   <p style="margin-top:.4rem">
-    <span data-lang="de">Fragen? Schreib uns über den Store.</span>
-    <span data-lang="en">Questions? Contact us via the store listing.</span>
+    <span data-lang="de">Fragen? Komm auf unseren <a href="https://discord.gg/hrUhEptSa" style="color:var(--cream);text-decoration:underline;" target="_blank" rel="noopener">Discord</a>.</span>
+    <span data-lang="en">Questions? Join our <a href="https://discord.gg/hrUhEptSa" style="color:var(--cream);text-decoration:underline;" target="_blank" rel="noopener">Discord</a>.</span>
   </p>
 </footer>
 
